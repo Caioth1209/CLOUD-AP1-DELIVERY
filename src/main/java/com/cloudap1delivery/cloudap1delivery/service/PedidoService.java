@@ -1,6 +1,5 @@
 package com.cloudap1delivery.cloudap1delivery.service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cloudap1delivery.cloudap1delivery.model.Pedido;
 import com.cloudap1delivery.cloudap1delivery.model.Cliente;
+import com.cloudap1delivery.cloudap1delivery.repository.ClienteRepository;
 import com.cloudap1delivery.cloudap1delivery.repository.PedidoRepository;
 
 @Service
@@ -18,6 +18,9 @@ public class PedidoService {
 
     @Autowired
     ClienteService clienteService;
+
+    @Autowired
+    ClienteRepository clienteRepository;
 
     public List<Pedido> findAll() {
         return this.pedidoRepository.findAll();
@@ -36,8 +39,7 @@ public class PedidoService {
 
         Cliente cliente = opCliente.get();
         cliente.addPedido(newPedido);
-        this.clienteService.savePedido(cliente);
-
+        this.clienteRepository.save(cliente);
         Pedido result = cliente.getPedidos().get(cliente.getPedidos().size() - 1);
         return result;
     }
